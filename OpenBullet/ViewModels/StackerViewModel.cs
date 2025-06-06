@@ -8,6 +8,7 @@ using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
+using System.Windows;
 using System.Windows.Media;
 
 namespace OpenBullet.ViewModels
@@ -153,6 +154,14 @@ namespace OpenBullet.ViewModels
 
         private bool sbsEnabled = false;
         public bool SBSEnabled { get { return sbsEnabled; } set { sbsEnabled = value; OnPropertyChanged(); } }
+
+        private bool saveResponseToFile = false;
+        public bool SaveResponseToFile { get { return saveResponseToFile; } set { saveResponseToFile = value; OnPropertyChanged(); OnPropertyChanged(nameof(ResponseFileButtonVisibility)); } }
+
+        public string ResponseFilePath { get; set; } = OB.debuggerResponseFile;
+
+        public System.Windows.Visibility ResponseFileButtonVisibility
+            => SaveResponseToFile ? System.Windows.Visibility.Visible : System.Windows.Visibility.Collapsed;
 
         // Search
         private string searchString = "";

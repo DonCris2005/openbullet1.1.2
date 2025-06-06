@@ -192,6 +192,8 @@
                 <Button DockPanel.Dock="Left" x:Name="startDebuggerButton" Content="Start" Click="startDebuggerButton_Click" ToolTip="Start the Debugger"/>
                 <CheckBox DockPanel.Dock="Left" IsEnabled="{Binding ControlsEnabled}" Content="SBS" IsChecked="{Binding SBS}" VerticalContentAlignment="Center" ToolTip="Step By Step"/>
                 <Button DockPanel.Dock="Left" IsEnabled="{Binding SBSEnabled}" x:Name="nextStepButton" Content="Step" Click="nextStepButton_Click" Margin="5 0 0 0" ToolTip="Take another Step"/>
+                <CheckBox DockPanel.Dock="Left" Content="Save Resp." IsChecked="{Binding SaveResponseToFile}" VerticalContentAlignment="Center" Margin="5 0"/>
+                <Button DockPanel.Dock="Left" Content="Open File" Margin="5 0" Visibility="{Binding ResponseFileButtonVisibility}" Click="openResponseFileButton_Click"/>
                 <Label DockPanel.Dock="Left" Content="Data:" VerticalAlignment="Center"/>
                 <Grid>
                     <Grid.ColumnDefinitions>
