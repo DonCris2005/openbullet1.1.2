@@ -15,6 +15,7 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Diagnostics;
+using System.IO;
 using System.Linq;
 using System.Reflection;
 using System.Threading;
@@ -450,7 +451,16 @@ namespace OpenBullet.Views.Main.Configs
             if (vm.BotData.LogBuffer.Count == 0) return;
             App.Current.Dispatcher.Invoke(new Action(() => {
                 foreach (LogEntry entry in vm.BotData.LogBuffer)
+                {
+                    if (vm.SaveResponseToFile &&
+                        (entry.LogString == "Response Source:" || entry.LogString == vm.BotData.ResponseSource))
+                        continue;
+
                     logRTB.AppendText(entry.LogString, entry.LogColor);
+                }
+
+                if (vm.SaveResponseToFile)
+                    logRTB.AppendText($"[Response saved to {vm.ResponseFilePath}]", Colors.Gray);
 
                 vm.BotData.LogBuffer.Add(new LogEntry(Environment.NewLine, Colors.White));
 
@@ -494,6 +504,12 @@ namespace OpenBullet.Views.Main.Configs
                 if (vm.BotData.ResponseSource != string.Empty)
                 {
                     htmlViewBrowser.DocumentText = vm.BotData.ResponseSource.Replace("alert(", "(");
+
+                    if (vm.SaveResponseToFile)
+                    {
+                        try { File.WriteAllText(vm.ResponseFilePath, vm.BotData.ResponseSource); }
+                        catch { }
+                    }
                 }
             }));
         }
@@ -810,6 +826,12 @@ namespace OpenBullet.Views.Main.Configs
         private void openDocButton_Click(object sender, RoutedEventArgs e)
         {
             (new MainDialog(new DialogLSDoc(), "LoliScript Documentation")).Show();
+        }
+
+        private void openResponseFileButton_Click(object sender, RoutedEventArgs e)
+        {
+            try { System.Diagnostics.Process.Start(vm.ResponseFilePath); }
+            catch { }
         }
     }
 
